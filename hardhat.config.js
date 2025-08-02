@@ -19,7 +19,7 @@ module.exports = {
     },
     sepolia: {
       url: process.env.SEPOLIA_RPC_URL || "https://rpc.sepolia.org",
-      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : []
+      accounts: process.env.ETHEREUM_PRIVATE_KEY !== undefined ? [process.env.ETHEREUM_PRIVATE_KEY] : []
     },
     mainnet: {
       url: process.env.MAINNET_RPC_URL || "https://eth-mainnet.alchemyapi.io/v2/your-api-key",
