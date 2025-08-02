@@ -1,1 +1,16 @@
 node_modules
+
+# Hardhat files
+cache/
+artifacts/
+
+# Environment files
+.env
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
