@@ -46,9 +46,9 @@ async function main() {
     await crossChainManager.addResolver(deployer.address);
     console.log("✅ Deployer added as resolver");
 
-    const stakeAmount = ethers.parseEther("0.1");
+    const stakeAmount = ethers.parseEther("1.0");
     await crossChainManager.stakeAsResolver({ value: stakeAmount });
-    console.log("✅ Resolver stake of 0.1 ETH deposited");
+    console.log("✅ Resolver stake of 1.0 ETH deposited");
 
     const network = await ethers.provider.getNetwork();
     const deploymentInfo = {
