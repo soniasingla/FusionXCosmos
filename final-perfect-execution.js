@@ -1,4 +1,4 @@
-const { ethers } = require("hardhat");
+const { ethers } = require("ethers");
 const { SigningCosmWasmClient } = require('@cosmjs/cosmwasm-stargate');
 const { DirectSecp256k1HdWallet } = require('@cosmjs/proto-signing');
 const { GasPrice } = require('@cosmjs/stargate');
@@ -16,18 +16,22 @@ async function finalPerfectExecution() {
     // Initialize connections
     console.log("📡 Initializing blockchain connections...");
     
-    const [ethSigner] = await ethers.getSigners();
+    // Connect directly to Sepolia
+    const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
+    const ethSigner = new ethers.Wallet(process.env.ETHEREUM_PRIVATE_KEY, provider);
+    
     console.log("✅ Ethereum Sepolia:", ethSigner.address);
     
-    const ethBalance = await ethers.provider.getBalance(ethSigner.address);
+    const ethBalance = await provider.getBalance(ethSigner.address);
     console.log("   Balance:", ethers.formatEther(ethBalance), "ETH");
 
-    // Load contracts
-    const AtomicSwapEthereum = await ethers.getContractFactory("AtomicSwapEthereum");
-    const atomicSwap = AtomicSwapEthereum.attach(process.env.SEPOLIA_ATOMIC_SWAP_ADDRESS);
+    // Load contracts with ABIs
+    const fs = require('fs');
+    const atomicSwapABI = JSON.parse(fs.readFileSync('./artifacts/contracts/ethereum/AtomicSwapEthereum.sol/AtomicSwapEthereum.json')).abi;
+    const crossChainManagerABI = JSON.parse(fs.readFileSync('./artifacts/contracts/ethereum/CrossChainSwapManagerTestnet.sol/CrossChainSwapManagerTestnet.json')).abi;
     
-    const CrossChainSwapManagerTestnet = await ethers.getContractFactory("CrossChainSwapManagerTestnet");
-    const crossChainManager = CrossChainSwapManagerTestnet.attach(process.env.SEPOLIA_CROSS_CHAIN_MANAGER_ADDRESS);
+    const atomicSwap = new ethers.Contract(process.env.SEPOLIA_ATOMIC_SWAP_ADDRESS, atomicSwapABI, ethSigner);
+    const crossChainManager = new ethers.Contract(process.env.SEPOLIA_CROSS_CHAIN_MANAGER_ADDRESS, crossChainManagerABI, ethSigner);
 
     // Get updated contract requirements
     const minSafetyDeposit = await atomicSwap.minimumSafetyDeposit();
@@ -189,7 +193,7 @@ async function finalPerfectExecution() {
                 networks: {
                     ethereum: {
                         network: "Sepolia Testnet",
-                        chainId: (await ethers.provider.getNetwork()).chainId.toString(),
+                        chainId: (await provider.getNetwork()).chainId.toString(),
                         address: ethSigner.address,
                         balance_before: ethers.formatEther(ethBalance),
                         explorer_base: "https://sepolia.etherscan.io"
