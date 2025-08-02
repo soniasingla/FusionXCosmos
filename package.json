@@ -19,6 +19,9 @@
     "hardhat": "^2.26.1"
   },
   "dependencies": {
+    "@cosmjs/cosmwasm-stargate": "^0.32.4",
+    "@cosmjs/proto-signing": "^0.32.4",
+    "@cosmjs/stargate": "^0.32.4",
     "dotenv": "^17.2.1",
     "ethers": "^6.15.0"
   }
