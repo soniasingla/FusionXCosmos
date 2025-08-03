@@ -172,6 +172,8 @@ h1 {
   border: 2px solid #e9ecef;
   border-radius: 8px;
   transition: all 0.3s ease;
+  overflow: hidden;
+  justify-content: space-between;
 }
 
 .step.pending {
@@ -225,6 +227,8 @@ h1 {
 
 .step-content {
   flex: 1;
+  min-width: 0;
+  margin-right: 10px;
 }
 
 .step-title {
@@ -248,8 +252,10 @@ h1 {
 }
 
 .step-status {
-  font-size: 24px;
-  margin-left: 15px;
+  font-size: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  flex-shrink: 0;
 }
 
 h3 {
